@@ -43,3 +43,9 @@ override fun onStart() {
             }
         )
     }
+
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/translate_up</item>
+        <item name="android:windowExitAnimation">@anim/translate_down</item>
+    </style>
