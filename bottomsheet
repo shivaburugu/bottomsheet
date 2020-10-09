@@ -1,0 +1,45 @@
+<style name="CustomBottomSheetDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+    
+    
+    
+    
+    private var maxHeight = 0
+   companion object {
+        fun instance(title: String?, list: List<String>) = BottomSheetDialog().apply {
+            setStyle(DialogFragment.STYLE_NO_TITLE, R.style.CustomBottomSheetDialog)
+        }
+    }
+
+
+override fun onStart() {
+        super.onStart()
+        maxHeight = (resources.displayMetrics.heightPixels) / 2
+        dialog?.window?.setGravity(Gravity.BOTTOM)
+        dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog?.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        setViewTreeObserver(view)
+    }
+    
+    
+    private fun setViewTreeObserver(view: View?) {
+        view?.viewTreeObserver?.addOnGlobalLayoutListener(
+            object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    if (view.height >= maxHeight) {
+                        view.layoutParams.height = maxHeight
+                        dialog?.window?.setLayout(
+                            WindowManager.LayoutParams.MATCH_PARENT,
+                            maxHeight
+                        )
+                    }
+                }
+            }
+        )
+    }
